@@ -18,7 +18,9 @@ M2_rotated = add.rotateZ(M2, math.pi/-4, [-1.85, 1.9, 0])  # Rotate 270 degrees
 add.mesh(M1)  # Add back first piece
 add.mesh(M2_rotated)  # Add back rotated second piece 
 
-add.newface([[-5, 2, 0], [0, 5, 0], [0, 0, 5]], [0, 0, 0])
+# Fill the gap between cabin pieces
+add.newface([[-1.5, 1.2, 1], [-1.5, 2.5, 1], [-2, 1.865, 1]], [200, 50, 50])  # Right side gap
+add.newface([[-1.5, 2.5, -1], [-1.5, 1.2, -1], [-2, 1.865, -1]], [200, 50, 50])  # Left side gap
 
 # Windshield (front)
 add.rectangle3D([1.5, 2.1, 0], [0.8, 0.8, 2], [100, 150, 255])  # Light blue glass
