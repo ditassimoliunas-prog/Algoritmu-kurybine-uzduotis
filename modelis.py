@@ -1,63 +1,127 @@
 import add
 import math
 
-add.axes([0, 0, 0])
+#add.axes([0, 0, 0])
 
-# Simple Car Model - Correct orientation
-# Y-axis is up, X-axis is forward, Z-axis is sideways
-# Main body (chassis) - extends along X (length=1.5), Y (height=0.75), Z (width=1.35)
-add.rectangle3D([0, 0.375, 0], [1.5, 0.75, 1.35], [107, 112, 121]) 
+# Function to build a car at the standard position [12, 0.25, 0]
+def build_car():
+    # Main body (chassis)
+    add.rectangle3D([12, 0.25, 0], [1.5, 0.75, 1.35], [107, 112, 121])
 
-# Cabin (top part)
-#add.rectangle3D([-0.25, 2, 0], [2.5, 1, 2], [107, 112, 121])  # Same color as body
-# M1 = add.layer()  # Save first piece
-# # Create and rotate the second cabin piece
-# add.rectangle3D([-2, 1.865, 0], [0.05, 1.42, 2], [203, 218, 245])
-# M2 = add.layer()  # Capture second piece
-# M2_rotated = add.rotateZ(M2, math.pi/-4, [-1.85, 1.9, 0])  # Rotate 270 degrees
-# add.mesh(M1)  # Add back first piece
-# add.mesh(M2_rotated)  # Add back rotated second piece 
+    # Frontglass and side windows
+    add.newface([[11.25, 0.625, -0.675], [11.25, 0.625, 0.675], [11.75, 0.975, 0.675], [11.75, 0.975, -0.675]], [203, 218, 245])
+    add.newface([[11.625, 0.625, 0.675], [11.625, 0.8875, 0.675], [11.25, 0.625, 0.675]], [203, 218, 245])
+    add.newface([[11.25, 0.625, -0.675], [11.625, 0.8875, -0.675], [11.625, 0.625, -0.675]], [203, 218, 245])
+
+    # Panel between side and rear windows
+    add.newface ([[11.625, 0.625, -0.675], [11.625, 0.8875, -0.675], [11.9, 0.925, -0.675], [11.9, 0.625, -0.675]], [203, 218, 245])
+    add.newface ([[11.9, 0.625, 0.675], [11.9, 0.925, 0.675], [11.625, 0.8875, 0.675], [11.625, 0.625, 0.675]], [203, 218, 245])
+    add.newface ([[11.9, 0.925, 0.675], [11.75, 0.975, 0.675], [11.625, 0.8875, 0.675]], [107, 112, 121])
+    add.newface ([[11.625, 0.8875, -0.675], [11.75, 0.975, -0.675], [11.9, 0.925, -0.675]], [107, 112, 121])
+
+    # Rear windows
+    add.newface ([[11.9, 0.625, -0.675], [11.9, 0.925, -0.675], [12.2, 0.825, -0.675], [12.2, 0.625, -0.675]], [203, 218, 245])
+    add.newface ([[11.9, 0.925, 0.675], [11.9, 0.625, 0.675], [12.2, 0.625, 0.675], [12.2, 0.825, 0.675]], [203, 218, 245])
+
+    # Frunk
+    add.newface ([[11.25, 0.625, 0.675], [11.25, 0.625, -0.675], [10.9, 0.525, -0.675], [10.9, 0.525, 0.675]], [107, 112, 121])
+    add.rectangle3D([11.075, 0.2, 0], [0.35, 0.65, 1.35], [107, 112, 121])
+    add.newface([[11.25, 0.525, 0.675], [11.25, 0.625, 0.675], [10.9, 0.525, 0.675]], [107, 112, 121])
+    add.newface([[10.9, 0.525, -0.675], [11.25, 0.625, -0.675], [11.25, 0.525, -0.675]], [107, 112, 121])
+
+    # Wheels
+    wheel_radius = 0.25
+    wheel_detail = 12
+    add.cylinder([11.3, -0.125, -0.405], [11.3, -0.125, -0.81], wheel_radius, wheel_detail, [50, 50, 50])
+    add.cylinder([12.45, -0.125, -0.405], [12.45, -0.125, -0.81], wheel_radius, wheel_detail, [50, 50, 50])
+    add.cylinder([11.3, -0.125, 0.405], [11.3, -0.125, 0.81], wheel_radius, wheel_detail, [50, 50, 50])
+    add.cylinder([12.45, -0.125, 0.405], [12.45, -0.125, 0.81], wheel_radius, wheel_detail, [50, 50, 50])
+
+    # Headlight
+    add.rectangle3D([10.8875, 0.425, 0], [0.025, 0.1, 1.345], [255, 255, 255])
+    # Taillight
+    add.rectangle3D([12.80625, 0.5875, 0], [0.1125, 0.025, 1.35], [255, 50, 50])
+    add.rectangle3D([12.80625, 0.6125, 0], [0.1125, 0.025, 1.35], [0, 0, 0])
+    add.rectangle3D([12.80625, 0.55, 0], [0.1125, 0.05, 1.35], [0, 0, 0])
+    add.rectangle3D([12.80625, 0.2, 0], [0.1125, 0.65, 1.35], [107, 112, 121])
+
+    # Trunk
+    add.newface ([[12.8625, 0.625, 0.675], [12.8625, 0.625, -0.675], [12.2, 0.825, -0.675], [12.2, 0.825, 0.675]], [46,48,52])
+    add.newface ([[11.75, 0.975, -0.675], [11.75, 0.975, 0.675], [12.2, 0.825, 0.675], [12.2, 0.825, -0.675]], [107, 112, 121])
+    add.newface ([[12.2, 0.625, -0.675], [12.2, 0.825, -0.675], [12.8625, 0.625, -0.675]], [107, 112, 121])
+    add.newface ([[12.8625, 0.625, 0.675], [12.2, 0.825, 0.675], [12.2, 0.625, 0.675]], [107, 112, 121])
 
 
+outer_radius = 30
+inner_radius = 15
+segments = 32
+height_top = -0.375
+height_bottom = -0.575
 
-# Frontglass and side windows
-add.newface ([[-0.75, 0.75, -0.675], [-0.75, 0.75, 0.675], [-0.25, 1.25, 0.675], [-0.25, 1.25, -0.675]], [203, 218, 245])  # Front glass
-add.newface([[-0.375, 0.75, 0.675], [-0.375, 1.125, 0.675], [-0.75, 0.75, 0.675]], [203, 218, 245])  # Right side gap
-add.newface([[-0.75, 0.75, -0.675], [-0.375, 1.125, -0.675], [-0.375, 0.75, -0.675]], [203, 218, 245])  # Left side gap
+for i in range(segments):
+    angle1 = 2 * math.pi * i / segments
+    angle2 = 2 * math.pi * (i + 1) / segments
+    
+    # Outer edge points
+    outer1_x = outer_radius * math.cos(angle1)
+    outer1_z = outer_radius * math.sin(angle1)
+    outer2_x = outer_radius * math.cos(angle2)
+    outer2_z = outer_radius * math.sin(angle2)
+    
+    # Inner edge points
+    inner1_x = inner_radius * math.cos(angle1)
+    inner1_z = inner_radius * math.sin(angle1)
+    inner2_x = inner_radius * math.cos(angle2)
+    inner2_z = inner_radius * math.sin(angle2)
+    
+    # Top surface of ring
+    add.newface([[outer1_x, height_top, outer1_z], [outer2_x, height_top, outer2_z], 
+                 [inner2_x, height_top, inner2_z], [inner1_x, height_top, inner1_z]], [80, 80, 80])
+    
+    # Bottom surface of ring
+    add.newface([[outer1_x, height_bottom, outer1_z], [inner1_x, height_bottom, inner1_z], 
+                 [inner2_x, height_bottom, inner2_z], [outer2_x, height_bottom, outer2_z]], [80, 80, 80])
+    
+    # Outer edge (side face)
+    add.newface([[outer1_x, height_top, outer1_z], [outer2_x, height_top, outer2_z],
+                 [outer2_x, height_bottom, outer2_z], [outer1_x, height_bottom, outer1_z]], [80, 80, 80])
+    
+    # Inner edge (side face)
+    add.newface([[inner1_x, height_top, inner1_z], [inner2_x, height_top, inner2_z],
+                 [inner2_x, height_bottom, inner2_z], [inner1_x, height_bottom, inner1_z]], [80, 80, 80])
+    
+    # Start radial face (at angle1)
+    add.newface([[outer1_x, height_top, outer1_z], [inner1_x, height_top, inner1_z],
+                 [inner1_x, height_bottom, inner1_z], [outer1_x, height_bottom, outer1_z]], [80, 80, 80])
+    
+    # End radial face (at angle2)
+    add.newface([[inner2_x, height_top, inner2_z], [outer2_x, height_top, outer2_z],
+                 [outer2_x, height_bottom, outer2_z], [inner2_x, height_bottom, inner2_z]], [80, 80, 80])
 
-# Frunk
-add.newface ([[-0.75, 0.75, 0.675], [-0.75, 0.75, -0.675], [-1.1, 0.65, -0.675], [-1.1, 0.65, 0.675]], [107, 112, 121]) #Frunk lid
-add.rectangle3D([-0.925, 0.325, 0], [0.35, 0.65, 1.35], [107, 112, 121]) #frunk body
-#add.newface ([[-0.12, 1.375, 0.675], [-0.12, 1.375, -0.675], [-0.75, 1, -0.675], [-0.75, 1, 0.675]], [107, 112, 121])
-# Wheels - cylinders with axis along Y (vertical)
-wheel_radius = 0.25
-wheel_detail = 12
+# Capture roundabout and clear
+ROUNDABOUT = add.layer()
 
-# Front left wheel
-add.cylinder([-0.7, 0, -0.405], [-0.7, 0, -0.81], wheel_radius, wheel_detail, [50, 50, 50])
+# Build multiple cars on the track
+num_cars = 1
+car_track_radius = 12
 
-# Rear left wheel
-add.cylinder([0.45, 0, -0.405], [0.45, 0, -0.81], wheel_radius, wheel_detail, [50, 50, 50])
+for car_num in range(num_cars):
+    angle = 2 * math.pi * car_num / num_cars
 
-# Front right wheel
-add.cylinder([-0.7, 0, 0.405], [-0.7, 0, 0.81], wheel_radius, wheel_detail, [50, 50, 50])
+    build_car()
+    CAR = add.layer()
 
-# Rear right wheel
-add.cylinder([0.45, 0, 0.405], [0.45, 0, 0.81], wheel_radius, wheel_detail, [50, 50, 50])
+    # Rotate around the center of the track and
+    # add a 90° offset so the truck points along the track.
+    CAR = add.rotateY(
+        CAR,
+        angle + math.pi / 2,
+        [0, 0.25, 0]
+    )
 
-# Headlight
-add.rectangle3D([-1.1125, 0.55, 0], [0.025, 0.1, 1.343], [255, 255, 255])
-# Taillight
-add.rectangle3D([0.675, 0.7135, 0], [0.375, 0.0275, 1.343], [255, 50, 50])
-add.rectangle3D([0.675, 0.74, 0], [0.375, 0.025, 1.343], [0, 0, 0])
-add.rectangle3D([0.675, 0.675, 0], [0.375, 0.05, 1.343], [0, 0, 0])
-add.rectangle3D([0.675, 0.325, 0], [0.375, 0.65, 1.343], [107, 112, 121])
+    add.mesh(CAR)
 
-#Trunk
-add.newface ([[0.8625, 0.745, 0.675], [0.8625, 0.755, -0.675], [0.2, 1.1, -0.675], [0.2, 1.1, 0.675]], [46,48,52])  # Trunk back face
-add.newface ([[-0.25, 1.25, -0.675], [-0.25, 1.25, 0.675], [0.2, 1.1, 0.675], [0.2, 1.1, -0.675]], [107, 112, 121])  # Trunk back face extension
-add.newface ([[0.2, 0.75, -0.675], [0.2, 1.1, -0.675], [0.86, 0.75, -0.675]], [107, 112, 121]) #Trunk right side
-add.newface ([[0.8, 0.75, 0.675], [0.2, 1.25, 0.675], [0.2, 0.75, 0.675]], [107, 112, 121]) #Trunk left side
-
+# Render roundabout after all cars
+add.mesh(ROUNDABOUT)
 
 add.off("car_model.off")
